@@ -9,7 +9,7 @@ import javax.persistence.Table;
 @Table(name="INTEREST_RATE")
 public class Rate {
 	private int id;
-	private int zipCode;
+	private String zipCode;
 	private double rate;
 	
 	public Rate() {}
@@ -24,12 +24,12 @@ public class Rate {
 		this.id = id;
 	}
 
-	@Column(name="ZIPCODE")
-	public int getZipCode() {
+	@Column
+	public String getZipCode() {
 		return zipCode;
 	}
 
-	public void setZipCode(int zipCode) {
+	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
 

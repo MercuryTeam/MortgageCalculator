@@ -22,9 +22,9 @@ public class RateDaoImpl implements RateDao {
     }
 
 	@Override
-	public Rate getRateByZipCode(int zipCode) {
+	public Rate getRateByZipCode(String zipCode) {
 		Criteria ct = this.getCurrentSession().createCriteria(Rate.class);
-		return (Rate)ct.add(Restrictions.eq("ZIPCODE", zipCode)).uniqueResult();
+		return (Rate)ct.add(Restrictions.eq("zipCode", zipCode)).uniqueResult();
 	}
 
 }
