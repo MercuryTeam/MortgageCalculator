@@ -46,11 +46,10 @@
     <!--  If deploying to weblogic, use this and comment the one above. Spring will get correct JTA Tx Mgr
 		<tx:jta-transaction-manager />   
 	 -->
-	 <!-- 
+ 
     <bean id="genericDao" class="com.mercury.common.db.HibernateDao" abstract="true" scope="prototype"/>
     
-    <bean id="userDao" parent="genericDao" scope="prototype">
-		<constructor-arg value="com.mercury.mortgage.persistence.dao.UserDAO" />
+    <bean id="rateDao" parent="genericDao" scope="prototype">
+		<constructor-arg value="com.mercury.mortgage.persistence.model.Rate" />
     </bean>  
-     -->
 </beans>

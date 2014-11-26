@@ -4,27 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mercury.mortgage.persistence.dao.RateDao;
+import com.mercury.common.db.HibernateDao;
 import com.mercury.mortgage.persistence.model.OneMonthSchedule;
+import com.mercury.mortgage.persistence.model.Rate;
 import com.mercury.mortgage.persistence.model.Schedule;
 
 @Service
 @Transactional(readOnly = true)
 public class CalculatingService {
 	@Autowired
-	private RateDao rd;
+	@Qualifier("rateDao")
+	private HibernateDao<Rate, Integer> hd;
 		
-	public RateDao getRd() {
-		return rd;
+	public HibernateDao<Rate, Integer> getHd() {
+		return hd;
 	}
-	
-	public void setRd(RateDao rd) {
-		this.rd = rd;
+
+	public void setHd(HibernateDao<Rate, Integer> hd) {
+		this.hd = hd;
 	}
-	
+
 	public String getCalculatingResult(double principal, int term, String zipCode) {
 		Schedule schedule = new Schedule();
 		schedule.setPrincipal(principal);
@@ -34,7 +37,7 @@ public class CalculatingService {
 		double totalInterest = 0;
 		double payPrincipal;
 		int numOfMonths = term * 12;
-		double rate = rd.getRateByZipCode(zipCode).getRate();
+		double rate = hd.findBy("zipCode", zipCode).getRate();
 		double monthlyRate = rate / 12;
 		double monthlyPayment = principal * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -numOfMonths)));
 		for (int i = 1; i < numOfMonths; i++) {
