@@ -26,7 +26,7 @@ public class CalculatingController {
 	@ResponseBody
 	public String calculating(HttpServletRequest request) {
 		double principal = Double.parseDouble(request.getParameter("principal"));
-		int term = Integer.parseInt(request.getParameter("loadTerm"));
+		String term = request.getParameter("loadTerm");
 		String zipCode = request.getParameter("zipCode");
 		return cs.getCalculatingResult(principal, term, zipCode);
 	}

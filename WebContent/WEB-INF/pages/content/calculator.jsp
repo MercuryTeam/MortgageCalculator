@@ -12,14 +12,32 @@
 		<tr>
 			<td>Principal: </td>
 			<td><input type="text" name="principal"/></td>
-		</tr>
-		<tr>
-			<td>Loan Term: </td>
-			<td><input type="text" name="loadTerm"/></td>
-		</tr>
+		</tr>		
 		<tr>
 			<td>Zip Code: </td>
 			<td><input type="text" name="zipCode"/></td>
+		</tr>
+		<tr>
+			<td>Loan Term: </td>
+			<td>
+				<input id="loanterm_30" type="radio" name="loadTerm" checked="checked" value="30"/>
+				<label for="loanterm_30">30 years fixed</label>
+				<input id="loanterm_20" type="radio" name="loadTerm" value="20"/>
+				<label for="loanterm_20">20 years fixed</label>
+				<input id="loanterm_15" type="radio" name="loadTerm" value="15"/>
+				<label for="loanterm_15">15 years fixed</label>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input id="loanterm_5_year_arm" type="radio" name="loadTerm"  value="5"/>
+				<label for="loanterm_5_year_arm">5-year ARM</label>
+				<input id="loanterm_7_year_arm" type="radio" name="loadTerm"  value="7"/>
+				<label for="loanterm_7_year_arm">7-year ARM</label>
+				<input id="loanterm_10_year_arm" type="radio" name="loadTerm"  value="10"/>
+				<label for="loanterm_10_year_arm">10-year ARM</label>
+			</td>
 		</tr>
 		<tr>
 			<td></td>
