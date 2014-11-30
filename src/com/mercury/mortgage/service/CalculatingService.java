@@ -30,8 +30,8 @@ public class CalculatingService {
 		this.hd = hd;
 	}
 
-	public String getCalculatingResult(double principal, String term, String zipCode) {
-		Schedule schedule;
+	public Schedule getCalculatingResult(double principal, String term, String zipCode) {
+		Schedule schedule = null;
 		
 		if ("15".equals(term) || "20".equals(term) || "30".equals(term)) {
 			schedule = fixedCalculating(principal, term, zipCode);
@@ -39,6 +39,8 @@ public class CalculatingService {
 			schedule = armCalculating(principal, term, zipCode);
 		}
 		
+		return schedule;
+		/*
 		String result = schedule.getPrincipal() + ", " + schedule.getTotalInterest() + "<br />";
 		for (OneMonthSchedule om:schedule.getList()) {
 			result += om.getMonth() + ", " + om.getPayment() + ", " + om.getPayPrincipal() + ", " 
@@ -46,6 +48,7 @@ public class CalculatingService {
 		}
 		
 		return result;
+		*/
 	}
 	
 	/* Calculating fixed rate mortgage schedule */

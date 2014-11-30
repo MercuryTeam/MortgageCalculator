@@ -43,6 +43,23 @@
 		</param-value>
   	</context-param>
   	
+  	<!-- Jersey Rest Web Service -->
+  	<servlet>
+  		<servlet-name>Jersey REST Service</servlet-name>
+  		<servlet-class>
+  			com.sun.jersey.spi.spring.container.servlet.SpringServlet
+  		</servlet-class>
+  		<init-param>
+  			<param-name>com.sun.jersey.config.property.packages</param-name>
+  			<param-value>com.mercury.mortgage.resources</param-value>
+  		</init-param>
+  		<load-on-startup>1</load-on-startup>
+  	</servlet>
+  	<servlet-mapping>
+  		<servlet-name>Jersey REST Service</servlet-name>
+  		<url-pattern>/rest/*</url-pattern>
+  	</servlet-mapping>
+  	
   	<welcome-file-list>
     	<welcome-file>/security/login.html</welcome-file>
   	</welcome-file-list>

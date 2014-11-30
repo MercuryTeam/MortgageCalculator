@@ -1,5 +1,8 @@
 package com.mercury.mortgage.persistence.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class OneMonthSchedule {
 	private int month;
 	private double payment;

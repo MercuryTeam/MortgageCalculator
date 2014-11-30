@@ -7,7 +7,7 @@
 <title>Calculator</title>
 </head>
 <body>
-<form action="calculating.html" method="post">
+<form action="rest/calculating" method="post">
 	<table>
 		<tr>
 			<td>Principal: </td>

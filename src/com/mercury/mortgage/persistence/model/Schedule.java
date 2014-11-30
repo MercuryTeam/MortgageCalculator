@@ -2,6 +2,10 @@ package com.mercury.mortgage.persistence.model;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Schedule {
 	private List<OneMonthSchedule> list;
 	private double principal;
@@ -14,18 +18,23 @@ public class Schedule {
 		this.totalInterest = totalInterest;
 	}
 	
+	@XmlElement(name="Schedule")
 	public List<OneMonthSchedule> getList() {
 		return list;
 	}
 	public void setList(List<OneMonthSchedule> list) {
 		this.list = list;
 	}
+	
+	@XmlElement(name="Principal")
 	public double getPrincipal() {
 		return principal;
 	}
 	public void setPrincipal(double principal) {
 		this.principal = principal;
 	}
+	
+	@XmlElement(name="TotalInterest")
 	public double getTotalInterest() {
 		return totalInterest;
 	}
