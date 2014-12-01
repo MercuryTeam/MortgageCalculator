@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class CalculatingController {
 
-	@RequestMapping(value="/calculator.html", method = RequestMethod.GET)
+	@RequestMapping(value="/content/calculator.html", method = RequestMethod.GET)
 	public String calculator(ModelMap model) {
 		return "content/calculator";
 	}
