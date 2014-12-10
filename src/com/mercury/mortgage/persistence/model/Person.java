@@ -2,11 +2,14 @@ package com.mercury.mortgage.persistence.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
-@Table(name="SS_PERSON")
+@Table(name="USER_TABLE")
 public class Person implements java.io.Serializable {
 
 	/**
@@ -15,6 +18,7 @@ public class Person implements java.io.Serializable {
 	private static final long serialVersionUID = 2748948831285204760L;
 	private int personId;
 	private String username;
+	private String email;
 	private String password;
 	private String authority;
 	private boolean enabled;
@@ -25,7 +29,9 @@ public class Person implements java.io.Serializable {
 
     // Property accessors
     @Id
-    @Column(name="PERSON_ID", nullable = false)
+    @GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy="increment")
+    @Column(name="ID", nullable = false)
     public int getPersonId() {
         return this.personId;
     }
@@ -40,7 +46,16 @@ public class Person implements java.io.Serializable {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+		
+	@Column
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Column
 	public String getPassword() {
 		return password;

@@ -1,0 +1,207 @@
+*{
+	padding: 0;
+	margin: 0;
+
+}
+@import url(http://fonts.googleapis.com/css?family=News+Cycle:400,700);
+body{
+	background-color: #ececeb;
+	padding:0px;
+}
+
+#logo01{
+	width: 100%;
+	height: 100%;
+	max-width: 350px;
+	max-height: 24px;
+
+}
+#title{
+	position: relative;
+	top:30px;
+}
+#nav01{
+	position: relative;
+	top: 20px;
+	color:#414141;
+	font-size:0.98em;
+	font-weight: 750;
+	font-family: 'News Cycle';
+	
+	
+}
+/* unvisited link */
+#nav01 a:link {
+    color: #414141;
+}
+
+/* visited link */
+#nav01 a:visited {
+    color: #414141;
+}
+
+/* mouse over link */
+#nav01 a:hover {
+    color: #414141;
+}
+
+/* selected link */
+#nav01 a:active {
+    color: #414141;
+}
+#carousel01{
+	position: relative;
+	top:-20px;
+}
+.crimg{
+	width: 100%;
+	max-height: 580px;
+}
+.hold{
+
+	width: 760px;
+	height: 160px;
+	background-color: rgba(16,0,0,0.72);
+}
+.ctitle{
+	font-size: 2em;
+	color: white;
+	text-align: left;
+}
+footer{
+	top: 700px;
+	position: relative;
+	border: 0px;
+	min-height: 300px;
+	background-color: #585658;
+	color: #FFF;
+	margin-top: 300px;
+	bottom: 0;
+
+}
+.body01{
+	position: relative;
+	top: 260px;
+	bottom: -200px;
+
+
+}
+#img00{
+	height: 120%;
+	width: 224px;
+	max-height: 250px;
+
+}
+.body00{
+	height: 200px;
+	max-height: 200px;
+}
+.body03{
+	height: 290px;
+}
+.asd{
+	top:-430px;
+	font-size: 1.3em;
+}
+.asd a{
+	font-size: 0.8em;
+	font-family: 
+}
+/* unvisited link */
+footer a:link {
+    color: #E0E0E0 ;
+}
+
+/* visited link */
+footer a:visited {
+    color: #C8C8C8;
+}
+
+/* mouse over link */
+footer a:hover {
+    color: #FFFFFF;
+}
+
+/* selected link */
+footer a:active {
+    color: #FFFFFF;
+}
+#logo02{
+	top:-280px;
+	position: relative;
+}
+#last{
+	margin-top: 15px;
+	font-size: 0.8em;
+}
+.inccc{
+	top:290px;
+	position: relative;
+}
+.icl{
+	left: 0;
+}
+.try{
+	padding:9px;
+	background-color: white;
+}
+.body02{
+	
+
+	margin-top: 15px;
+	margin-right: 0px;
+	padding-left: 5px;
+	padding-right: 5px;
+
+}
+.iimg{
+	width: 100%;
+	height: 100%;
+}
+#last02{
+	bottom: 200px;
+}
+body{
+	overflow: scroll;
+}
+.body04{
+	
+	margin: 0px;
+	padding: 0px;
+}
+#last11{
+	background-color: white;
+	top: -200px;
+}
+.body30{
+	
+}
+.inner{
+	margin-bottom:50px;
+}
+
+.ng-pristine {
+    	
+    }
+.register01.ng-dirty.empty01 {
+    border: solid #FF191D 1px;
+}
+.leftn{
+	text-align: left;
+	padding-left:30px;
+	padding-top:15px;
+}
+.bcc{
+	
+	background-color:white;
+}
+.bcb{
+	top:38px;
+	background-color:white;
+}
+.topp{
+	margin-top:-50px;
+	posotion:relative;
+	padding-top:50px;
+	padding-bottom:10px;
+} 

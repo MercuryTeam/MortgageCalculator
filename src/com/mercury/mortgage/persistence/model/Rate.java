@@ -4,12 +4,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name="INTEREST_RATE")
+@XmlRootElement
 public class Rate {
 	private int id;
-	private String zipCode;
+	private String state;
+	private String abbr;
 	private double rate15;
 	private double rate20;
 	private double rate30;
@@ -29,13 +32,23 @@ public class Rate {
 		this.id = id;
 	}
 
+	
 	@Column
-	public String getZipCode() {
-		return zipCode;
+	public String getState() {
+		return state;
 	}
 
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	@Column
+	public String getAbbr() {
+		return abbr;
+	}
+
+	public void setAbbr(String abbr) {
+		this.abbr = abbr;
 	}
 
 	@Column

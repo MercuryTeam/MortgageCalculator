@@ -30,112 +30,123 @@ public class CalculatingService {
 		this.hd = hd;
 	}
 
-	public Schedule getCalculatingResult(double principal, String term, String zipCode) {
+	public Schedule getCalculatingResult(double principal, String term, String state, double extra, int extraDuration) {
 		Schedule schedule = null;
+		Schedule scheduleNoExtra = null;
+		double savedInterest;
+		int numOfMonths = Integer.parseInt(term) * 12;
+		double rate = getInterestRate(term, state);		
 		
 		if ("15".equals(term) || "20".equals(term) || "30".equals(term)) {
-			schedule = fixedCalculating(principal, term, zipCode);
+			schedule = fixedCalculating(principal, numOfMonths, rate, extra, extraDuration);
+			scheduleNoExtra = fixedCalculating(principal, numOfMonths, rate, 0, 0);			
 		} else {
-			schedule = armCalculating(principal, term, zipCode);
+			schedule = armCalculating(principal, numOfMonths, rate, extra, extraDuration);
+			scheduleNoExtra = armCalculating(principal, numOfMonths, rate, 0, 0);
+		}
+		savedInterest = scheduleNoExtra.getTotalInterest() - schedule.getTotalInterest();
+		schedule.setSavedInterest(savedInterest);
+		
+		return schedule;
+	}	
+	
+	// Calculating fixed rate mortgage schedule
+	private Schedule fixedCalculating(double principal, int numOfMonths, double rate, double extra, int extraDuration) {
+		Schedule schedule = new Schedule();
+		schedule.setPrincipal(principal);
+		schedule.setList(new ArrayList<OneMonthSchedule>());
+		
+		double monthlyRate = rate / 12;
+		double monthlyPayment = principal * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -numOfMonths)));
+		principal = calculating(principal, numOfMonths, monthlyRate, monthlyPayment, extra, extraDuration, 1, schedule);
+		
+		return schedule;
+	}
+	
+	// Calculating adjustable rate mortgage schedule
+	private Schedule armCalculating(double principal, int initialDuration, double rate, double extra, int extraDuration) {
+		Schedule schedule = new Schedule();
+		schedule.setPrincipal(principal);
+		schedule.setList(new ArrayList<OneMonthSchedule>());
+		
+		int startMonth = 1;
+		double monthlyRate = rate / 12;
+		int numOfMonths = 30 * 12;
+		double monthlyPayment = principal * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -numOfMonths)));
+		
+		// Calculating initial schedule
+		principal = calculating(principal, initialDuration, monthlyRate, monthlyPayment, extra, extraDuration, startMonth, schedule);
+		
+		// Calculating rest schedule
+		startMonth += initialDuration;
+		numOfMonths = numOfMonths - initialDuration;
+		extraDuration = (extraDuration - initialDuration < 0) ? 0 : (extraDuration - initialDuration);
+		while (principal != 0) {
+			rate = rate - 0.025 / 100;
+			monthlyRate = rate / 12;
+			monthlyPayment = principal * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -numOfMonths)));
+			principal = calculating(principal, 12, monthlyRate, monthlyPayment, extra, extraDuration, startMonth, schedule);
+			startMonth += 12;
+			numOfMonths = numOfMonths - 12;
+			extraDuration = (extraDuration - 12 < 0) ? 0 : (extraDuration - 12);
 		}
 		
 		return schedule;
-		/*
-		String result = schedule.getPrincipal() + ", " + schedule.getTotalInterest() + "<br />";
-		for (OneMonthSchedule om:schedule.getList()) {
-			result += om.getMonth() + ", " + om.getPayment() + ", " + om.getPayPrincipal() + ", " 
-					+ om.getInterest() + ", " + om.getRemainPrincipal() + "<br />";
-		}
-		
-		return result;
-		*/
 	}
 	
-	/* Calculating fixed rate mortgage schedule */
-	private Schedule fixedCalculating(double principal, int numOfMonths, double rate, 
-					int startMonth, int endMonth, boolean willEnd)  {
-		Schedule schedule = new Schedule();
-		schedule.setPrincipal(principal);
-		List<OneMonthSchedule> list = new ArrayList<OneMonthSchedule>();		
-		
-		double interest;
-		double totalInterest = 0;
-		double payPrincipal;
-		double monthlyRate = rate / 12;
-		double monthlyPayment = principal * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -numOfMonths)));
-		if (!willEnd) {
-			endMonth++;
+	
+	private double calculating(double principal, int duration, double monthlyRate, double monthlyPayment, 
+			 					double extra, int extraDuration, int startMonth, Schedule schedule) {
+		if (extraDuration >= duration) {
+			principal = calculating(principal, duration, monthlyRate, monthlyPayment + extra, startMonth, schedule);
+		} else {
+			// Calculating schedule with additional principal
+			principal = calculating(principal, extraDuration, monthlyRate, monthlyPayment + extra, startMonth, schedule);
+			// Calculating rest schedule without additional principal
+			if (principal != 0) {
+				principal = calculating(principal, duration - extraDuration, monthlyRate, monthlyPayment, extraDuration + startMonth, schedule);
+			}
 		}
-		for (int i = startMonth; i < endMonth; i++) {
-			interest = principal * monthlyRate;
-			payPrincipal = monthlyPayment - interest;
+
+		return principal;
+	}
+	
+	
+	private double calculating(double principal, int numOfMonths, double monthlyRate, 
+							double monthlyPayment, int startMonth, Schedule schedule) {
+		double totalInterest = 0;
+		double interest = principal * monthlyRate;
+		double payPrincipal = monthlyPayment - interest;
+		List<OneMonthSchedule> list = schedule.getList();
+		
+		int i;
+		for (i = startMonth; (i < startMonth + numOfMonths) && (monthlyPayment < principal); i++) {
 			principal = principal - payPrincipal;
 			OneMonthSchedule oms = new OneMonthSchedule(i, monthlyPayment, payPrincipal, interest, principal);
 			list.add(oms);
 			totalInterest += interest;
+			interest = principal * monthlyRate;
+			payPrincipal = monthlyPayment - interest;
 		}
 		
-		if (willEnd) {
+		if (i < startMonth + numOfMonths) {
 			interest = principal * monthlyRate;
-			monthlyPayment = principal + interest;
-			OneMonthSchedule oms = new OneMonthSchedule(endMonth, monthlyPayment, principal, interest, 0);
+			payPrincipal = principal;
+			monthlyPayment = payPrincipal + interest;
+			principal = 0;
+			OneMonthSchedule oms = new OneMonthSchedule(i, monthlyPayment, payPrincipal, interest, principal);
 			list.add(oms);
 			totalInterest += interest;
 		}
-		schedule.setList(list);
-		schedule.setTotalInterest(totalInterest);
+		schedule.setTotalInterest(schedule.getTotalInterest() + totalInterest);
 		
-		return schedule;
-	}
-	
-	private Schedule fixedCalculating(double principal, String term, String zipCode) {
-		int numOfMonths = Integer.parseInt(term) * 12;
-		double rate = getInterestRate(term, zipCode);
-		return fixedCalculating(principal, numOfMonths, rate, 1, numOfMonths, true);
-	}
-	
-	/* Calculating adjustable rate mortgage schedule */
-	private Schedule armCalculating(double principal, String term, String zipCode) {
-		int numOfMonths = 30 * 12;
-		int initialFixed = Integer.parseInt(term) * 12;
-		double rate = getInterestRate(term, zipCode);
-		double totalInterest = 0;
-		Schedule scheduleResult = new Schedule();
-		scheduleResult.setPrincipal(principal);
-		
-		//Initial fixed schedule
-		Schedule schedule = fixedCalculating(principal, numOfMonths, rate, 1, initialFixed, false);		
-		rate = rate - 0.025 / 100;
-		List<OneMonthSchedule> list = schedule.getList();
-		principal = list.get(list.size() - 1).getRemainPrincipal();
-		numOfMonths = numOfMonths - initialFixed;
-		totalInterest += schedule.getTotalInterest();
-		scheduleResult.setList(list);
-		
-		//remain schedule
-		for (int i = initialFixed + 1; i < 30 * 12 - 11; i += 12) {			
-			schedule = fixedCalculating(principal, numOfMonths, rate, i, i + 11, false);
-			rate = rate - 0.025 / 100;
-			list = schedule.getList();
-			principal = list.get(list.size() - 1).getRemainPrincipal();
-			numOfMonths = numOfMonths - 12;
-			totalInterest += schedule.getTotalInterest();
-			scheduleResult.getList().addAll(list);
-		}
-		
-		schedule = fixedCalculating(principal, numOfMonths, rate, 30 * 12 - 11, 30 * 12, true);		
-		list = schedule.getList();
-		totalInterest += schedule.getTotalInterest();
-		scheduleResult.getList().addAll(list);
-		scheduleResult.setTotalInterest(totalInterest);
-		
-		return scheduleResult;
+		return principal;
 	}
 	
 	
-	private double getInterestRate(String term, String zipCode) {
+	private double getInterestRate(String term, String state) {
 		Map<String, Double> map = new HashMap<String, Double>();
-		Rate interestRate = hd.findBy("zipCode", zipCode);
+		Rate interestRate = hd.findBy("abbr", state);
 		map.put("15", interestRate.getRate15());
 		map.put("20", interestRate.getRate20());
 		map.put("30", interestRate.getRate30());
@@ -144,4 +155,6 @@ public class CalculatingService {
 		map.put("10", interestRate.getArm10());
 		return map.get(term) / 100;
 	}
+	
+	
 }

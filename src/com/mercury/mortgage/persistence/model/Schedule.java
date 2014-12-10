@@ -10,6 +10,7 @@ public class Schedule {
 	private List<OneMonthSchedule> list;
 	private double principal;
 	private double totalInterest;
+	private double savedInterest;
 	
 	public Schedule() {}
 	public Schedule(List<OneMonthSchedule> list, double principal, double totalInterest) {
@@ -40,5 +41,13 @@ public class Schedule {
 	}
 	public void setTotalInterest(double totalInterest) {
 		this.totalInterest = totalInterest;
+	}
+	
+	@XmlElement(name="SavedInterest")
+	public double getSavedInterest() {
+		return savedInterest;
+	}
+	public void setSavedInterest(double savedInterest) {
+		this.savedInterest = savedInterest;
 	}	
 }

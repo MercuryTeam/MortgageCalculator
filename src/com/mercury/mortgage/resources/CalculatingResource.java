@@ -21,9 +21,12 @@ public class CalculatingResource {
 	@POST
 	@Produces({MediaType.APPLICATION_JSON})
 	public Schedule calculating(@FormParam("principal") String principal, 
-								@FormParam("loadTerm") String term, @FormParam("zipCode") String zipCode) {
+								@FormParam("loadTerm") String term, @FormParam("state") String state,
+								@FormParam("extra") String extra, @FormParam("extraDuration") String extraDuration) {
 		double pl = Double.parseDouble(principal);
-		return cs.getCalculatingResult(pl, term, zipCode);
+		double et = Double.parseDouble(extra);
+		int ed = Integer.parseInt(extraDuration);
+		return cs.getCalculatingResult(pl, term, state, et, ed);
 	}
 	
 	
